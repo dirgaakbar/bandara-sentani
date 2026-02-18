@@ -2,202 +2,208 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jadwal Penerbangan Sentani (DJJ)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Penerbangan Bandara Sentani (DJJ)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #388bfd; --bg: #0d1117; --card: #161b22; --text: #c9d1d9; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
+        :root { --bg-dark: #0f172a; --card-bg: #1e293b; --accent: #388bfd; }
+        body { background-color: var(--bg-dark); color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; padding-bottom: 50px; }
         
-        /* Header Style */
-        .hero { background: linear-gradient(180deg, #1f2937 0%, #0d1117 100%); padding: 30px 15px; border-bottom: 1px solid #30363d; text-align: center; }
-        .hero h1 { font-weight: 800; font-size: 1.5rem; color: #fff; margin-bottom: 5px; letter-spacing: -0.5px; }
-        .hero p { font-size: 0.9rem; color: #8b949e; }
-
-        /* Status Cards */
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; margin-top: -25px; }
-        .stat-box { background: var(--card); border: 1px solid #30363d; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
-        .stat-box small { font-size: 0.7rem; color: #8b949e; text-transform: uppercase; display: block; }
-        .stat-box span { font-weight: 700; color: var(--primary); font-size: 1rem; }
-
-        /* Table Card */
-        .flight-card { background: var(--card); border-radius: 16px; margin: 10px 15px; border: 1px solid #30363d; overflow: hidden; }
-        .table { margin-bottom: 0; font-size: 0.85rem; }
-        .table thead { background: #21262d; }
-        .table thead th { border: none; color: #8b949e; font-weight: 600; padding: 12px; font-size: 0.7rem; }
-        .table td { padding: 15px 12px; border-color: #30363d; vertical-align: middle; color: #fff; }
-
-        /* Flight Styles */
-        .f-no { font-family: 'JetBrains Mono', monospace; color: #f2cc60; font-weight: bold; display: block; }
-        .f-air { font-size: 0.75rem; color: #8b949e; display: block; }
-        .f-dest { font-weight: 600; font-size: 0.9rem; }
+        /* Hero Section */
+        .hero-section { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 40px 0; border-bottom: 1px solid #334155; margin-bottom: 30px; }
+        .hero-badge { background: rgba(56, 139, 253, 0.1); color: var(--accent); padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; }
         
-        .badge-status { padding: 5px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; }
-        .status-red { background: rgba(248, 81, 73, 0.1); color: #f85149; border: 1px solid rgba(248, 81, 73, 0.2); }
-        .status-blue { background: rgba(56, 139, 253, 0.1); color: #58a6ff; border: 1px solid rgba(56, 139, 253, 0.2); }
-
-        @media (max-width: 576px) {
-            .hero h1 { font-size: 1.25rem; }
-            .table thead { display: none; } /* Sembunyikan header tabel di HP agar lega */
-            .table tr { display: block; border-bottom: 1px solid #30363d; padding: 10px 0; }
-            .table td { display: block; border: none; padding: 5px 15px; }
-            .table td:nth-child(1) { float: left; } /* Jam */
-            .table td:nth-child(4) { text-align: right; font-size: 1.1rem; } /* Jam */
-            .table td:nth-child(5) { clear: both; padding-top: 10px; } /* Status */
-        }
+        /* Info Cards */
+        .stat-card { background: var(--card-bg); border: 1px solid #334155; border-radius: 12px; padding: 20px; transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        
+        /* Flight Board */
+        .board-container { background: var(--card-bg); border-radius: 16px; border: 1px solid #334155; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .table { margin-bottom: 0; }
+        .table thead th { background: #1e293b; border-bottom: 2px solid #334155; color: #94a3b8; font-size: 0.75rem; letter-spacing: 1px; }
+        .table td { vertical-align: middle; border-bottom: 1px solid #334155; padding: 15px; }
+        
+        .flight-code { font-family: 'JetBrains Mono', monospace; color: #fbbf24; font-weight: bold; }
+        .dest-text { font-weight: 600; color: #f8fafc; }
+        
+        /* Status Badges */
+        .status-pill { padding: 4px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; display: inline-block; }
+        .status-departed { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .status-scheduled { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); }
+        
+        .footer-text { color: #64748b; font-size: 0.85rem; margin-top: 40px; }
     </style>
 </head>
 <body>
 
-    <section class="hero">
-        <h1>BANDARA SENTANI (DJJ)</h1>
-        <p>Jadwal Keberangkatan Pesawat Hari Ini</p>
-    </section>
-
-    <div class="stat-grid">
-        <div class="stat-box">
-            <small>Waktu Lokal (WIT)</small>
-            <span> 05:04 WIT</span>
+    <header class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <span class="hero-badge mb-2 d-inline-block">Live Flight Information</span>
+                    <h1 class="display-5 fw-bold mb-3">Bandar Udara Internasional Sentani (DJJ)</h1>
+                    <p class="lead text-secondary">Pantau jadwal keberangkatan pesawat secara real-time. Data diperbarui otomatis setiap hari menggunakan automasi Python.</p>
+                </div>
+                <div class="col-md-5 text-md-end">
+                    <div class="stat-card d-inline-block text-start">
+                        <small class="text-secondary d-block text-uppercase">Waktu Saat Ini (WIT)</small>
+                        <h3 class="fw-bold m-0 text-info"> 05:07 WIT</h3>
+                        <small class="text-muted">19 Feb 2026</small>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="stat-box">
-            <small>Total Pesawat</small>
-            <span>6 Penerbangan</span>
+    </header>
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="stat-card">
+                    <h6 class="text-secondary">Lokasi Bandara</h6>
+                    <p class="m-0 fw-bold">Jayapura, Papua (DJJ)</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="stat-card border-start border-info border-4">
+                    <h6 class="text-secondary">Total Penerbangan Hari Ini</h6>
+                    <p class="m-0 fw-bold">6 Pesawat Terjadwal</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="stat-card">
+                    <h6 class="text-secondary">Status Update</h6>
+                    <p class="m-0 fw-bold text-success">● Automasi Aktif</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="board-container">
+            <div class="p-3 bg-dark d-flex justify-content-between align-items-center">
+                <h5 class="m-0 fw-bold">Jadwal Keberangkatan (Departures)</h5>
+                <small class="text-muted italic">Keterangan: Waktu yang tertera adalah Waktu Indonesia Timur (WIT)</small>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>NO. PENERBANGAN</th>
+                            <th>MASKAPAI</th>
+                            <th>TUJUAN</th>
+                            <th>JAM</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td class="flight-code">GA 651</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span>Garuda Indonesia</span>
+                                </div>
+                            </td>
+                            <td class="dest-text text-uppercase">Jakarta (CGK)</td>
+                            <td class="fw-bold">08:15</td>
+                            <td>
+                                
+                                <span class="status-pill status-departed">TELAH BERANGKAT</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="flight-code">ID 6181</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span>Batik Air</span>
+                                </div>
+                            </td>
+                            <td class="dest-text text-uppercase">Makassar (UPG)</td>
+                            <td class="fw-bold">09:40</td>
+                            <td>
+                                
+                                <span class="status-pill status-departed">TELAH BERANGKAT</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="flight-code">JT 795</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span>Lion Air</span>
+                                </div>
+                            </td>
+                            <td class="dest-text text-uppercase">Jayapura (DJJ) - Merauke</td>
+                            <td class="fw-bold">11:00</td>
+                            <td>
+                                
+                                <span class="status-pill status-scheduled">TERJADWAL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="flight-code">IL 271</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span>Trigana Air</span>
+                                </div>
+                            </td>
+                            <td class="dest-text text-uppercase">Wamena (WMX)</td>
+                            <td class="fw-bold">12:30</td>
+                            <td>
+                                
+                                <span class="status-pill status-scheduled">TERJADWAL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="flight-code">IW 1632</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span>Wings Air</span>
+                                </div>
+                            </td>
+                            <td class="dest-text text-uppercase">Dekai (DEX)</td>
+                            <td class="fw-bold">13:15</td>
+                            <td>
+                                
+                                <span class="status-pill status-scheduled">TERJADWAL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="flight-code">GA 653</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span>Garuda Indonesia</span>
+                                </div>
+                            </td>
+                            <td class="dest-text text-uppercase">Jayapura (DJJ) - Timika</td>
+                            <td class="fw-bold">14:45</td>
+                            <td>
+                                
+                                <span class="status-pill status-scheduled">TERJADWAL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="footer-text text-center">
+            <hr class="border-secondary mb-4">
+            <p><strong>Proyek Portofolio Data Automation</strong></p>
+            <p>Dibuat dengan Python (Jinja2, Pandas) & Deploy otomatis via GitHub Actions.</p>
+            <p class="small text-muted">Data yang ditampilkan di atas bersifat simulasi untuk keperluan demonstrasi portofolio teknologi.</p>
         </div>
     </div>
-
-    <div class="flight-card">
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>MASKAPAI / NO</th>
-                        <th>TUJUAN</th>
-                        <th>JAM (WIT)</th>
-                        <th>STATUS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    <tr>
-                        <td>
-                            <span class="f-no">GA 651</span>
-                            <span class="f-air">Garuda Indonesia</span>
-                        </td>
-                        <td>
-                            <span class="f-dest">Jakarta (CGK)</span>
-                        </td>
-                        <td class="text-center fw-bold text-info">
-                            08:15
-                        </td>
-                        <td>
-                            
-                            <span class="badge-status status-red">DEPARTED</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                            <span class="f-no">ID 6181</span>
-                            <span class="f-air">Batik Air</span>
-                        </td>
-                        <td>
-                            <span class="f-dest">Makassar (UPG)</span>
-                        </td>
-                        <td class="text-center fw-bold text-info">
-                            09:40
-                        </td>
-                        <td>
-                            
-                            <span class="badge-status status-red">DEPARTED</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                            <span class="f-no">JT 795</span>
-                            <span class="f-air">Lion Air</span>
-                        </td>
-                        <td>
-                            <span class="f-dest">Jayapura (DJJ) - Merauke</span>
-                        </td>
-                        <td class="text-center fw-bold text-info">
-                            11:00
-                        </td>
-                        <td>
-                            
-                            <span class="badge-status status-blue">SCHEDULED</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                            <span class="f-no">IL 271</span>
-                            <span class="f-air">Trigana Air</span>
-                        </td>
-                        <td>
-                            <span class="f-dest">Wamena (WMX)</span>
-                        </td>
-                        <td class="text-center fw-bold text-info">
-                            12:30
-                        </td>
-                        <td>
-                            
-                            <span class="badge-status status-blue">SCHEDULED</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                            <span class="f-no">IW 1632</span>
-                            <span class="f-air">Wings Air</span>
-                        </td>
-                        <td>
-                            <span class="f-dest">Dekai (DEX)</span>
-                        </td>
-                        <td class="text-center fw-bold text-info">
-                            13:15
-                        </td>
-                        <td>
-                            
-                            <span class="badge-status status-blue">SCHEDULED</span>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                            <span class="f-no">GA 653</span>
-                            <span class="f-air">Garuda Indonesia</span>
-                        </td>
-                        <td>
-                            <span class="f-dest">Jayapura (DJJ) - Timika</span>
-                        </td>
-                        <td class="text-center fw-bold text-info">
-                            14:45
-                        </td>
-                        <td>
-                            
-                            <span class="badge-status status-blue">SCHEDULED</span>
-                            
-                        </td>
-                    </tr>
-                    
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <footer class="text-center mt-4 mb-5">
-        <p style="font-size: 0.7rem; color: #8b949e;">
-            <strong>Otomatisasi Portofolio Dirga</strong><br>
-            Data diperbarui setiap hari via Python & GitHub Actions
-        </p>
-    </footer>
 
 </body>
 </html>
