@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJJ Flight Board - Sentani Airport</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Inter', sans-serif; }
+        .board-container { margin-top: 50px; border: 2px solid #30363d; border-radius: 12px; background: #161b22; overflow: hidden; }
+        .board-header { background: #21262d; padding: 20px; border-bottom: 2px solid #30363d; }
+        .airport-code { color: #58a6ff; font-family: 'JetBrains Mono', monospace; font-weight: bold; }
+        .table { margin-bottom: 0; color: #c9d1d9; vertical-align: middle; }
+        .table thead th { background: #161b22; border-bottom: 1px solid #30363d; color: #8b949e; text-transform: uppercase; font-size: 0.8rem; }
+        .flight-no { color: #f2cc60; font-family: 'JetBrains Mono', monospace; font-weight: bold; }
+        .status-badge { padding: 5px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+        .bg-departed { background: #3e2223; color: #ff7b72; border: 1px solid #6e3630; }
+        .bg-scheduled { background: #21262d; color: #58a6ff; border: 1px solid #388bfd; }
+        .footer-info { padding: 15px; font-size: 0.8rem; color: #8b949e; background: #0d1117; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="board-container shadow-lg">
+            <div class="board-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="m-0 h4">DEPARTURES / KEBERANGKATAN</h2>
+                    <span class="airport-code">SENTANI INTL - DJJ</span>
+                </div>
+                <div class="text-end">
+                    <div class="badge bg-success mb-1">REAL-TIME DATA</div>
+                    <div class="small">Waktu Lokal: {{ last_update }}</div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Flight</th>
+                            <th>Airline</th>
+                            <th>Destination</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for flight in flights %}
+                        <tr>
+                            <td class="flight-no">{{ flight.flight_no }}</td>
+                            <td>{{ flight.airline }}</td>
+                            <td>{{ flight.destination }}</td>
+                            <td>{{ flight.time }}</td>
+                            <td>
+                                <span class="status-badge {{ 'bg-departed' if flight.status == 'DEPARTED' else 'bg-scheduled' }}">
+                                    {{ flight.status }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="footer-info text-center">
+                Project Portofolio - Automated with Python & GitHub Actions
+            </div>
+        </div>
+    </div>
+</body>
+</html>
